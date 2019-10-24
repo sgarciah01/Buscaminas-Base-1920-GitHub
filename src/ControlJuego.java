@@ -25,21 +25,44 @@ public class ControlJuego {
 		
 		//Inicializamos una nueva partida
 		inicializarPartida();
+		
+		depurarTablero();
 	}
 	
 	
-	/**Método para generar un nuevo tablero de partida:
+	/**
+	 * Método para generar un nuevo tablero de partida:
 	 * @pre: La estructura tablero debe existir. 
 	 * @post: Al final el tablero se habrá inicializado con tantas minas como marque la variable MINAS_INICIALES. 
 	 * 			El resto de posiciones que no son minas guardan en el entero cuántas minas hay alrededor de la celda
 	 */
 	public void inicializarPartida(){
+		int minasColocadas = 0;	// Contador de minas colocadas en el tablero
+		int x, y;	// Nos sirve para colocar las minas en el tablero
 
 		//TODO: Repartir minas e inicializar puntación. Si hubiese un tablero anterior, lo pongo todo a cero para inicializarlo.
+		for (int i = 0; i < tablero.length; i++) {
+			for (int j = 0; j < tablero.length; j++) {
+				tablero[i][j] = 0;	// Inicializo el tablero a cero
+			}
+		}
 		
+		/*
+		 *  Una vez tengo el tablero inicializado, sin minas, coloco las minas. Genero una dupla (x, y) aleatoriamente y, si
+		 *  no contiene ninguna mina, la coloco en ella y decremento el contador de minas colocadas.
+		 */
+		while (minasColocadas < MINAS_INICIALES) {
+			x = (int) (Math.random()*LADO_TABLERO);
+			y = (int) (Math.random()*LADO_TABLERO);
+			
+			// Si no hay mina en la posición (x, y), pongo una mina y aumento el contador
+			if (tablero[x][y] == 0) {		
+				tablero[x][y] = MINA;
+				minasColocadas++;
+			}
+		}
 		
-		
-		//Al final del método hay que guardar el número de minas para las casillas que no son mina:
+		// Al final del método hay que guardar el número de minas para las casillas que no son mina:
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
 				if (tablero[i][j] != MINA){
@@ -49,7 +72,8 @@ public class ControlJuego {
 		}
 	}
 	
-	/**Cálculo de las minas adjuntas: 
+	/**
+	 * Cálculo de las minas adjuntas: 
 	 * Para calcular el número de minas tenemos que tener en cuenta que no nos salimos nunca del tablero.
 	 * Por lo tanto, como mucho la i y la j valdrán LADO_TABLERO-1.
 	 * Por lo tanto, como poco la i y la j valdrán 0.
@@ -58,18 +82,44 @@ public class ControlJuego {
 	 * @return : El número de minas que hay alrededor de la casilla [i][j]
 	 **/
 	private int calculoMinasAdjuntas(int i, int j){
-		return 0;
+		int contadorMinas = 0;	// Contador de minas
+		// Guarda las posiciones de inicio y fin de comprobación.
+		int inicioI = (i - 1),
+				finI = (i + 1),
+				inicioJ = (j - 1),
+				finJ = (j + 1);
+		
+		for (int k = inicioI; k <= finI; k++) {
+			for (int l = inicioJ; l <= finJ; l++) {
+				try {
+					if (tablero[k][l] == MINA)
+						contadorMinas++;
+				} catch(IndexOutOfBoundsException e) {
+					/*
+					 *  Captura la excepción en caso de que te salgas del tablero para que no se salga.
+					 *  No hacemos nada en caso de que ocurra esto.
+					 */
+				}
+			}
+		}
+		
+		return contadorMinas;
 	}
 	
 	/**
-	 * Método que nos permite 
+	 * Método que nos permite comprobar si ha sido explotada una mina o no. En caso de no explotar una mina, suma puntos.
 	 * @pre : La casilla nunca debe haber sido abierta antes, no es controlado por el ControlJuego. Por lo tanto siempre sumaremos puntos
 	 * @param i: posición verticalmente de la casilla a abrir
 	 * @param j: posición horizontalmente de la casilla a abrir
 	 * @return : Verdadero si no ha explotado una mina. Falso en caso contrario.
 	 */
 	public boolean abrirCasilla(int i, int j){
-		return false;
+		if (tablero[i][j] == MINA) {
+			return false;	// Ha explotado una mina
+		} else {
+			puntuacion++;
+			return true;	// No ha explotado una mina
+		}
 	}
 	
 	
