@@ -162,7 +162,8 @@ public class VentanaPrincipal {
 	
 	/**
 	 * Muestra una ventana que indica el fin del juego
-	 * @param porExplosion : Un booleano que indica si es final del juego porque ha explotado una mina (true) o bien porque hemos desactivado todas (false) 
+	 * @param porExplosion : Un booleano que indica si es final del juego porque ha explotado una mina (true) 
+	 * 						 o bien porque hemos desactivado todas (false) 
 	 * @post : Todos los botones se desactivan excepto el de volver a iniciar el juego.
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {

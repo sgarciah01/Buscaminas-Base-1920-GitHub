@@ -8,7 +8,6 @@ import java.util.Random;
  * Si no hay una mina, se guarda cuántas minas hay alrededor.
  * Almacena la puntuación de la partida
  * @author jesusredondogarcia
- *
  */
 public class ControlJuego {
 	private final static int MINA = -1;
@@ -129,7 +128,8 @@ public class ControlJuego {
 	 * @return Devuelve verdadero si se han abierto todas las celdas que no son minas.
 	 **/
 	public boolean esFinJuego(){
-		return false;
+		// Se cumple cuando la puntuación es igual al número de casillas totales mostradas
+		return ((LADO_TABLERO*LADO_TABLERO)-MINAS_INICIALES) == puntuacion;
 	}
 	
 	
@@ -155,7 +155,7 @@ public class ControlJuego {
 	 * @return Un entero que representa el número de minas alrededor de la celda
 	 */
 	public int getMinasAlrededor(int i, int j) {
-		return 0;
+		return tablero[i][j];
 	}
 
 	/**
