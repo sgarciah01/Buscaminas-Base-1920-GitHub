@@ -47,19 +47,19 @@ public class ActionBoton implements ActionListener {
 			this.ventana.actualizarPuntuacion(); // Actualizamos la puntuación
 			
 			// Ahora expandimos hacia todos los lados (siempre que sea posible)
-			if (i > 0)	{
+			if (posI > 0)	{
 				if (!this.ventana.casillasAbiertas[posI-1][posJ])
 					ejecutarAccion(posI-1, posJ);		// Hacia la izquierda
 			}
-			if (i < this.ventana.juego.LADO_TABLERO) {
+			if (posI < this.ventana.juego.LADO_TABLERO) {
 				if (!this.ventana.casillasAbiertas[posI+1][posJ])
 					ejecutarAccion(posI+1, posJ);		// Hacia la derecha
 			}
-			if (j > 0) {
+			if (posJ > 0) {
 				if (!this.ventana.casillasAbiertas[posI][posJ-1])
 					ejecutarAccion(posI, posJ-1);		// Hacia arriba
 			}
-			if (j < this.ventana.juego.LADO_TABLERO) {	
+			if (posJ < this.ventana.juego.LADO_TABLERO) {	
 				if (!this.ventana.casillasAbiertas[posI][posJ+1])
 					ejecutarAccion(posI, posJ+1);		// Hacia abajo
 			}
