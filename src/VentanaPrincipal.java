@@ -2,8 +2,6 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,8 +26,8 @@ public class VentanaPrincipal {
 	JButton[][] botonesJuego;
 
 	// Correspondencia de colores para las minas:
-	Color correspondenciaColores[] = { Color.BLACK, Color.CYAN, Color.GREEN, Color.ORANGE, Color.RED, Color.RED,
-			Color.RED, Color.RED, Color.RED, Color.RED };
+	Color correspondenciaColores[] = { Color.BLACK, Color.BLUE, new Color(45, 87, 44), new Color(216, 75, 32), Color.RED, 
+			Color.RED, Color.RED, Color.RED, Color.RED, Color.RED };
 
 	JButton botonEmpezar;
 	JTextField pantallaPuntuacion;
@@ -136,12 +134,64 @@ public class VentanaPrincipal {
 	 * programa
 	 */
 	public void inicializarListeners() {
-		// TODO
+		
+		// Inicializamos los listeners de los botones del panel.
 		for (int i = 0; i < juego.LADO_TABLERO; i++) {
 			for (int j = 0; j < juego.LADO_TABLERO; j++) {
+				// Utilizamos la clase ActionBoton
 				botonesJuego[i][j].addActionListener(new ActionBoton(this, i, j));
 			}
 		}
+		
+		// Le ponemos un ActionListener al botón de empezar
+		botonEmpezar.addActionListener((e) -> {
+			// Cuando pulsemos, aparece un JOption. Si decimos que sí, inicializamos el juego
+			if (JOptionPane.showConfirmDialog(null, "¿Quieres empezar un nuevo juego?", 
+					"Nuevo Juego", JOptionPane.OK_OPTION) == JOptionPane.YES_OPTION) {
+				
+				// Eliminamos las vistas que hay en los paneles
+				ponerJuegoAPunto();
+				
+				juego = new ControlJuego();
+				//inicializar();
+				refrescarPantalla();
+			}
+		});
+	}
+	
+	public void ponerJuegoAPunto() {
+		
+		// Ponemos puntuación a cero
+		pantallaPuntuacion.setText("0");
+
+		// Eliminamos los botones y los volvemos a poner
+		panelJuego.removeAll();
+		panelesJuego = new JPanel[10][10];
+		for (int i = 0; i < panelesJuego.length; i++) {
+			for (int j = 0; j < panelesJuego[i].length; j++) {
+				panelesJuego[i][j] = new JPanel();
+				panelesJuego[i][j].setLayout(new GridLayout(1, 1));
+				panelJuego.add(panelesJuego[i][j]);
+			}
+		}
+		
+		panelEmpezar.removeAll();	
+		botonEmpezar = new JButton("Go!");
+
+		// Botones
+		botonesJuego = new JButton[10][10];
+		for (int i = 0; i < botonesJuego.length; i++) {
+			for (int j = 0; j < botonesJuego[i].length; j++) {
+				botonesJuego[i][j] = new JButton("-");
+				panelesJuego[i][j].add(botonesJuego[i][j]);
+			}
+		}
+		
+		// Añadimos botón empezar
+		panelEmpezar.add(botonEmpezar);
+		
+		// Añadimos los listeners
+		inicializarListeners();
 	}
 
 	/**
