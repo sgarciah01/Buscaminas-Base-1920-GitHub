@@ -26,7 +26,7 @@ public class VentanaPrincipal {
 	JButton[][] botonesJuego;
 
 	// Correspondencia de colores para las minas:
-	Color correspondenciaColores[] = { Color.BLACK, Color.BLUE, new Color(45, 87, 44), new Color(216, 75, 32), Color.RED, 
+	Color correspondenciaColores[] = { Color.BLACK, Color.BLUE, new Color(0, 143, 57), new Color(216, 75, 32), Color.RED, 
 			Color.RED, Color.RED, Color.RED, Color.RED, Color.RED };
 
 	JButton botonEmpezar;
@@ -139,7 +139,7 @@ public class VentanaPrincipal {
 			for (int j = 0; j < juego.LADO_TABLERO; j++) {
 				// Utilizamos la clase ActionBoton
 				botonesJuego[i][j].addActionListener(new ActionBoton(this, i, j));
-				botonesJuego[i][j].
+				botonesJuego[i][j].addMouseListener(new MouseListenerBoton(this, i, j));
 			}
 		}
 		
