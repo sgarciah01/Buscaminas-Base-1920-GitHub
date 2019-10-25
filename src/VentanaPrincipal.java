@@ -34,6 +34,9 @@ public class VentanaPrincipal {
 
 	// LA VENTANA GUARDA UN CONTROL DE JUEGO:
 	ControlJuego juego;
+	
+	// Matriz que nos indica qué casillas están abiertas
+	boolean[][] casillasAbiertas;
 
 	// Constructor, marca el tamaño y el cierre del frame
 	public VentanaPrincipal() {
@@ -41,6 +44,13 @@ public class VentanaPrincipal {
 		ventana.setBounds(100, 100, 700, 500);
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		juego = new ControlJuego();
+		casillasAbiertas = new boolean[10][10];
+		
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				casillasAbiertas[i][j] = true;
+			}
+		}
 	}
 
 	// Inicializa todos los componentes del frame
@@ -216,6 +226,9 @@ public class VentanaPrincipal {
 		// Eliminamos el botón y añadimos el JLabel
 		panelesJuego[i][j].remove(botonesJuego[i][j]);
 		panelesJuego[i][j].add(label);
+		
+		// Indicamos que hemos abierto la casilla
+		casillasAbiertas[i][j] = true;
 	}
 
 	/**
