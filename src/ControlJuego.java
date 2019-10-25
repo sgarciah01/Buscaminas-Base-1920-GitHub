@@ -17,7 +17,6 @@ public class ControlJuego {
 	private int [][] tablero;
 	private int puntuacion;
 	
-	
 	public ControlJuego() {
 		//Creamos el tablero:
 		tablero = new int[LADO_TABLERO][LADO_TABLERO];
