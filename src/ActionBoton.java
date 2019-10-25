@@ -1,8 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-
 /**
  * Clase que implementa el listener de los botones del Buscaminas.
  * De alguna manera tendrá que poder acceder a la ventana principal.
@@ -17,8 +15,13 @@ public class ActionBoton implements ActionListener{
 	private int i;
 	private int j;
 	
+	/**
+	 * Constructor por defecto del ActionBoton.
+	 * @param ventana Ventana del juego
+	 * @param i Posición i del botón pulsado
+	 * @param j Posición j del botón pulsado
+	 */
 	public ActionBoton(VentanaPrincipal ventana, int i, int j) {
-		//TODO
 		this.ventana = ventana;
 		this.i = i;
 		this.j = j;

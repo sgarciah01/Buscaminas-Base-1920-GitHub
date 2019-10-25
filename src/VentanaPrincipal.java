@@ -126,7 +126,6 @@ public class VentanaPrincipal {
 		// BotónEmpezar:
 		panelEmpezar.add(botonEmpezar);
 		panelPuntuacion.add(pantallaPuntuacion);
-
 	}
 
 	/**
@@ -140,6 +139,7 @@ public class VentanaPrincipal {
 			for (int j = 0; j < juego.LADO_TABLERO; j++) {
 				// Utilizamos la clase ActionBoton
 				botonesJuego[i][j].addActionListener(new ActionBoton(this, i, j));
+				botonesJuego[i][j].
 			}
 		}
 		
