@@ -1,5 +1,18 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 /**
  * Clase que implementa el listener de los botones del Buscaminas. De alguna
@@ -34,22 +47,26 @@ public class ActionBoton implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("\n--> PULSADA CASILLA (" + i + ", " + j + ") <--\n");
-		ejecutarAccion(i, j);
-		System.out.println("\n--> FIN ACCIÓN (" + i + ", " + j + ") <--\n");
-	}
-
-	public void ejecutarAccion(int posI, int posJ) {
 		int numMinas;
-
-		System.out.println("-> Ejecutada acción (" + posI + ", " + posJ + ")");
-
-		if (!ventana.juego.abrirCasilla(posI, posJ)) {
+		
+		if (!ventana.juego.abrirCasilla(i, j)) {
 			// Hemos pisado una mina
-			ventana.mostrarFinJuego(true); // Termina el juego
-		} else {
 			
-			ventana.mostrarNumMinasAlrededor(posI, posJ); // Mostramos minas alrededor
+			Player apl;
+			try {
+				apl = new Player(new FileInputStream("sonidos/a_fregar.mp3"));
+				apl.play();
+			} catch (FileNotFoundException | JavaLayerException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+			ventana.mostrarFinJuego(true); // Termina el juego
+			
+		} else {
+
+			ventana.mostrarNumMinasAlrededor(i, j); // Mostramos minas alrededor
 			ventana.actualizarPuntuacion(); // Actualizamos la puntuación
 			ventana.refrescarPantalla(); // Refrescamos la pantalla
 
@@ -57,41 +74,43 @@ public class ActionBoton implements ActionListener {
 				ventana.mostrarFinJuego(false); // Mostramos final del juego, ¡¡ HEMOS GANADO !!
 			else {
 				// Obtenemos el número de minas
-				numMinas = ventana.juego.getMinasAlrededor(posI, posJ);
-				
-				// En caso de que tengamos 0 minas en esta casilla, ejecutamos el onClick de las casillas adyacentes
-				if (numMinas == 0) {	 
-					
+				numMinas = ventana.juego.getMinasAlrededor(i, j);
+
+				// En caso de que tengamos 0 minas en esta casilla, ejecutamos el onClick de las
+				// casillas adyacentes
+				if (numMinas == 0) {
+
 					if (i > 0) {
-						if (!ventana.casillaAbierta[posI-1][posJ])
-							ventana.botonesJuego[posI-1][posJ].doClick();					
-					} if (i > 0 && j > 0) {
-						if (!ventana.casillaAbierta[posI-1][posJ-1])
-							ventana.botonesJuego[posI-1][posJ-1].doClick();
+						if (!ventana.casillaAbierta[i - 1][j])
+							ventana.botonesJuego[i - 1][j].doClick();
+					}
+					if (i > 0 && j > 0) {
+						if (!ventana.casillaAbierta[i - 1][j - 1])
+							ventana.botonesJuego[i - 1][j - 1].doClick();
 					}
 					if (j > 0) {
-						if (!ventana.casillaAbierta[posI][posJ-1])
-							ventana.botonesJuego[posI][posJ-1].doClick();
+						if (!ventana.casillaAbierta[i][j - 1])
+							ventana.botonesJuego[i][j - 1].doClick();
 					}
-					if (i < ventana.juego.LADO_TABLERO-1 && j>0) {
-						if (!ventana.casillaAbierta[posI+1][posJ-1])
-							ventana.botonesJuego[posI+1][posJ-1].doClick();
+					if (i < ventana.juego.LADO_TABLERO - 1 && j > 0) {
+						if (!ventana.casillaAbierta[i + 1][j - 1])
+							ventana.botonesJuego[i + 1][j - 1].doClick();
 					}
-					if (i < ventana.juego.LADO_TABLERO-1) {
-						if (!ventana.casillaAbierta[posI+1][posJ])
-							ventana.botonesJuego[posI+1][posJ].doClick();
+					if (i < ventana.juego.LADO_TABLERO - 1) {
+						if (!ventana.casillaAbierta[i + 1][j])
+							ventana.botonesJuego[i + 1][j].doClick();
 					}
-					if (i < ventana.juego.LADO_TABLERO-1 && j < ventana.juego.LADO_TABLERO-1) {
-						if (!ventana.casillaAbierta[posI+1][posJ+1])
-							ventana.botonesJuego[posI+1][posJ+1].doClick();
+					if (i < ventana.juego.LADO_TABLERO - 1 && j < ventana.juego.LADO_TABLERO - 1) {
+						if (!ventana.casillaAbierta[i + 1][j + 1])
+							ventana.botonesJuego[i + 1][j + 1].doClick();
 					}
-					if (j < ventana.juego.LADO_TABLERO-1) {
-						if (!ventana.casillaAbierta[posI][posJ+1])
-							ventana.botonesJuego[posI][posJ+1].doClick();
+					if (j < ventana.juego.LADO_TABLERO - 1) {
+						if (!ventana.casillaAbierta[i][j + 1])
+							ventana.botonesJuego[i][j + 1].doClick();
 					}
-					if (i > 0 && j < ventana.juego.LADO_TABLERO-1) {
-						if (!ventana.casillaAbierta[posI-1][posJ+1])
-							ventana.botonesJuego[posI-1][posJ+1].doClick();
+					if (i > 0 && j < ventana.juego.LADO_TABLERO - 1) {
+						if (!ventana.casillaAbierta[i - 1][j + 1])
+							ventana.botonesJuego[i - 1][j + 1].doClick();
 					}
 				}
 			}
