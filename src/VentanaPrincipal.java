@@ -200,6 +200,13 @@ public class VentanaPrincipal {
 		// Añadimos botón empezar
 		panelEmpezar.add(botonEmpezar);
 		
+		// Ponemos todas las casillas a cerradas
+		for (int i = 0; i < juego.LADO_TABLERO; i++) {
+			for (int j = 0;  j < juego.LADO_TABLERO; j++) {
+				casillaAbierta[i][j] = false;
+			}
+		}
+		
 		// Añadimos los listeners
 		inicializarListeners();
 	}
@@ -237,66 +244,50 @@ public class VentanaPrincipal {
 	 * @param j Columna de la casilla
 	 */
 	public void abrirCasillaCero(int i, int j) {
-//		mostrarNumMinasAlrededor(i, j);	// Casilla pulsada
-//		
-//		if (i > 0) {
-//			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j) + ")");
-//			if (!casillaAbierta[i-1][j])
-//				mostrarNumMinasAlrededor(i-1, j);	// Casilla superior
-//		}
-//			
-//		if (i > 0 && j > 0) {
-//			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j) + ")");
-//			if (!casillaAbierta[i-1][j-1])
-//				mostrarNumMinasAlrededor(i-1, j-1);	// Casilla diagonal superior izquierda
-//		}
-//		if (j > 0) {
-//			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j-1) + ")");
-//			if (!casillaAbierta[i][j-1])
-//				mostrarNumMinasAlrededor(i, j-1);	// Casilla izquierda
-//		}
-//		if (i < juego.LADO_TABLERO-1 && j>0) {
-//			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j-1) + ")");
-//			if (!casillaAbierta[i+1][j-1])
-//				mostrarNumMinasAlrededor(i+1, j-1);	// Casilla diagonal inferior izquierda
-//		}
-//		if (i < juego.LADO_TABLERO-1) {
-//			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j) + ")");
-//			if (!casillaAbierta[i+1][j])
-//				mostrarNumMinasAlrededor(i+1, j);	// Casilla inferior
-//		}
-//		if (i < juego.LADO_TABLERO-1 && j < juego.LADO_TABLERO-1) {
-//			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j+1) + ")");
-//			if (!casillaAbierta[i+1][j+1])
-//				mostrarNumMinasAlrededor(i+1, j+1);	// Casilla diagonal inferior derecha
-//		}
-//		if (j < juego.LADO_TABLERO-1) {
-//			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j+1) + ")");
-//			if (!casillaAbierta[i][j+1])
-//				mostrarNumMinasAlrededor(i, j+1);	// Casilla derecha
-//		}
-//		if (i > 0 && j < juego.LADO_TABLERO-1) {
-//			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j+1) + ")");
-//			if (!casillaAbierta[i-1][j+1])
-//				mostrarNumMinasAlrededor(i-1, j+1);	// Casilla diagonal superior derecha
-//		}
+		mostrarNumMinasAlrededor(i, j);	// Casilla pulsada
 		
-		/*
-		 *  Recorremos todas las casillas alrededor de la dada y si no está abierto, lo abrimos.
-		 *  En caso de salirnos de los límites de la matriz, capturamos la excepción y no hacemos nada.
-		 */
-		for (int iaux = i-1; iaux < i+1; i++) {
-			for (int jaux = j-1; jaux < j+1; j++) {
-				try {
-					if (!casillaAbierta[iaux][jaux]) {
-						mostrarNumMinasAlrededor(iaux, jaux);
-						juego.abrirCasilla(iaux, jaux);
-					}
-				} catch(IndexOutOfBoundsException ex) {
-					// Capturamos la excepción pero no hacemos nada
-				}
-			}
+		if (i > 0) {
+			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j) + ")");
+			if (!casillaAbierta[i-1][j])
+				mostrarNumMinasAlrededor(i-1, j);	// Casilla superior
 		}
+			
+		if (i > 0 && j > 0) {
+			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j) + ")");
+			if (!casillaAbierta[i-1][j-1])
+				mostrarNumMinasAlrededor(i-1, j-1);	// Casilla diagonal superior izquierda
+		}
+		if (j > 0) {
+			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j-1) + ")");
+			if (!casillaAbierta[i][j-1])
+				mostrarNumMinasAlrededor(i, j-1);	// Casilla izquierda
+		}
+		if (i < juego.LADO_TABLERO-1 && j>0) {
+			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j-1) + ")");
+			if (!casillaAbierta[i+1][j-1])
+				mostrarNumMinasAlrededor(i+1, j-1);	// Casilla diagonal inferior izquierda
+		}
+		if (i < juego.LADO_TABLERO-1) {
+			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j) + ")");
+			if (!casillaAbierta[i+1][j])
+				mostrarNumMinasAlrededor(i+1, j);	// Casilla inferior
+		}
+		if (i < juego.LADO_TABLERO-1 && j < juego.LADO_TABLERO-1) {
+			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j+1) + ")");
+			if (!casillaAbierta[i+1][j+1])
+				mostrarNumMinasAlrededor(i+1, j+1);	// Casilla diagonal inferior derecha
+		}
+		if (j < juego.LADO_TABLERO-1) {
+			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j+1) + ")");
+			if (!casillaAbierta[i][j+1])
+				mostrarNumMinasAlrededor(i, j+1);	// Casilla derecha
+		}
+		if (i > 0 && j < juego.LADO_TABLERO-1) {
+			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j+1) + ")");
+			if (!casillaAbierta[i-1][j+1])
+				mostrarNumMinasAlrededor(i-1, j+1);	// Casilla diagonal superior derecha
+		}
+
 	}
 
 	/**
@@ -309,22 +300,46 @@ public class VentanaPrincipal {
 		boolean flag = false;
 		int iaux = i-1, jaux = j-1;
 		
-		/*
-		 *  Recorremos todas las casillas alrededor de la dada y si no está abierto, lo abrimos.
-		 *  En caso de salirnos de los límites de la matriz, capturamos la excepción y no hacemos nada.
-		 */
-		while (iaux < i+1 && !flag) {
-			while (jaux < j+1 && !flag) {
-				try {
-					if (!casillaAbierta[iaux][jaux])
-						flag = true;
-				} catch(IndexOutOfBoundsException ex) {
-					// Capturamos la excepción pero no hacemos nada
-				} finally {
-					jaux++;
-				}
-			}
-			iaux++;
+		if (i > 0) {
+			System.out.println("\tAbiertasAlrededor (" + (i-1) + ", " + (j) + ")");
+			if (!casillaAbierta[i-1][j])
+				flag = true;	// Casilla superior
+		}
+			
+		if (i > 0 && j > 0) {
+			System.out.println("\tAbiertasAlrededor (" + (i-1) + ", " + (j-1) + ")");
+			if (!casillaAbierta[i-1][j-1])
+				flag = true;	// Casilla diagonal superior izquierda
+		}
+		if (j > 0) {
+			System.out.println("\tAbiertasAlrededor (" + (i) + ", " + (j-1) + ")");
+			if (!casillaAbierta[i][j-1])
+				flag = true;	// Casilla izquierda
+		}
+		if (i < juego.LADO_TABLERO-1 && j>0) {
+			System.out.println("\tAbiertasAlrededor (" + (i+1) + ", " + (j-1) + ")");
+			if (!casillaAbierta[i+1][j-1])
+				flag = true;	// Casilla diagonal inferior izquierda
+		}
+		if (i < juego.LADO_TABLERO-1) {
+			System.out.println("\tAbiertasAlrededor (" + (i+1) + ", " + (j) + ")");
+			if (!casillaAbierta[i+1][j])
+				flag = true;	// Casilla inferior
+		}
+		if (i < juego.LADO_TABLERO-1 && j < juego.LADO_TABLERO-1) {
+			System.out.println("\tAbiertasAlrededor (" + (i+1) + ", " + (j+1) + ")");
+			if (!casillaAbierta[i+1][j+1])
+				flag = true;	// Casilla diagonal inferior derecha
+		}
+		if (j < juego.LADO_TABLERO-1) {
+			System.out.println("\tAbiertasAlrededor (" + (i) + ", " + (j+1) + ")");
+			if (!casillaAbierta[i][j+1])
+				flag = true;	// Casilla derecha
+		}
+		if (i > 0 && j < juego.LADO_TABLERO-1) {
+			System.out.println("\tAbiertasAlrededor (" + (i-1) + ", " + (j+1) + ")");
+			if (!casillaAbierta[i-1][j+1])
+				flag = true;	// Casilla diagonal superior derecha
 		}
 		
 		return flag;

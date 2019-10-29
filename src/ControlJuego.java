@@ -81,14 +81,9 @@ public class ControlJuego {
 	 **/
 	private int calculoMinasAdjuntas(int i, int j){
 		int contadorMinas = 0;	// Contador de minas
-		// Guarda las posiciones de inicio y fin de comprobación.
-		int inicioI = (i - 1),
-				finI = (i + 1),
-				inicioJ = (j - 1),
-				finJ = (j + 1);
 		
-		for (int k = inicioI; k <= finI; k++) {
-			for (int l = inicioJ; l <= finJ; l++) {
+		for (int k = (i - 1); k <= (i + 1); k++) {
+			for (int l = (j - 1); l <= (j + 1); l++) {
 				try {
 					if (tablero[k][l] == MINA)
 						contadorMinas++;
