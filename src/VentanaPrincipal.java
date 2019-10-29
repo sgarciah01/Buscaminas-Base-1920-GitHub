@@ -36,7 +36,7 @@ public class VentanaPrincipal {
 	ControlJuego juego;
 	
 	// Matriz que nos indica qué casillas están abiertas
-	boolean[][] casillasAbiertas;
+	boolean[][] casillaAbierta;
 
 	// Constructor, marca el tamaño y el cierre del frame
 	public VentanaPrincipal() {
@@ -44,11 +44,11 @@ public class VentanaPrincipal {
 		ventana.setBounds(100, 100, 700, 500);
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		juego = new ControlJuego();
-		casillasAbiertas = new boolean[10][10];
+		casillaAbierta = new boolean[10][10];
 		
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				casillasAbiertas[i][j] = true;
+				casillaAbierta[i][j] = false;
 			}
 		}
 	}
@@ -228,9 +228,108 @@ public class VentanaPrincipal {
 		panelesJuego[i][j].add(label);
 		
 		// Indicamos que hemos abierto la casilla
-		casillasAbiertas[i][j] = true;
+		casillaAbierta[i][j] = true;
+	}
+	
+	/**
+	 * Abre todas las casillas que están al lado de la casilla en la posición (i, j).
+	 * @param i Fila de la casilla
+	 * @param j Columna de la casilla
+	 */
+	public void abrirCasillaCero(int i, int j) {
+//		mostrarNumMinasAlrededor(i, j);	// Casilla pulsada
+//		
+//		if (i > 0) {
+//			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j) + ")");
+//			if (!casillaAbierta[i-1][j])
+//				mostrarNumMinasAlrededor(i-1, j);	// Casilla superior
+//		}
+//			
+//		if (i > 0 && j > 0) {
+//			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j) + ")");
+//			if (!casillaAbierta[i-1][j-1])
+//				mostrarNumMinasAlrededor(i-1, j-1);	// Casilla diagonal superior izquierda
+//		}
+//		if (j > 0) {
+//			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j-1) + ")");
+//			if (!casillaAbierta[i][j-1])
+//				mostrarNumMinasAlrededor(i, j-1);	// Casilla izquierda
+//		}
+//		if (i < juego.LADO_TABLERO-1 && j>0) {
+//			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j-1) + ")");
+//			if (!casillaAbierta[i+1][j-1])
+//				mostrarNumMinasAlrededor(i+1, j-1);	// Casilla diagonal inferior izquierda
+//		}
+//		if (i < juego.LADO_TABLERO-1) {
+//			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j) + ")");
+//			if (!casillaAbierta[i+1][j])
+//				mostrarNumMinasAlrededor(i+1, j);	// Casilla inferior
+//		}
+//		if (i < juego.LADO_TABLERO-1 && j < juego.LADO_TABLERO-1) {
+//			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j+1) + ")");
+//			if (!casillaAbierta[i+1][j+1])
+//				mostrarNumMinasAlrededor(i+1, j+1);	// Casilla diagonal inferior derecha
+//		}
+//		if (j < juego.LADO_TABLERO-1) {
+//			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j+1) + ")");
+//			if (!casillaAbierta[i][j+1])
+//				mostrarNumMinasAlrededor(i, j+1);	// Casilla derecha
+//		}
+//		if (i > 0 && j < juego.LADO_TABLERO-1) {
+//			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j+1) + ")");
+//			if (!casillaAbierta[i-1][j+1])
+//				mostrarNumMinasAlrededor(i-1, j+1);	// Casilla diagonal superior derecha
+//		}
+		
+		/*
+		 *  Recorremos todas las casillas alrededor de la dada y si no está abierto, lo abrimos.
+		 *  En caso de salirnos de los límites de la matriz, capturamos la excepción y no hacemos nada.
+		 */
+		for (int iaux = i-1; iaux < i+1; i++) {
+			for (int jaux = j-1; jaux < j+1; j++) {
+				try {
+					if (!casillaAbierta[iaux][jaux]) {
+						mostrarNumMinasAlrededor(iaux, jaux);
+						juego.abrirCasilla(iaux, jaux);
+					}
+				} catch(IndexOutOfBoundsException ex) {
+					// Capturamos la excepción pero no hacemos nada
+				}
+			}
+		}
 	}
 
+	/**
+	 * Comprueba que todas las casillas alrededor de la posición (i, j) están abiertas.
+	 * @param i Fila de la casilla
+	 * @param j Columna de la casilla
+	 * @return Verdadero en caso de que todas estén abiertas. Falso si hay alguna cerrada.
+	 */
+	public boolean estanAbiertasTodasAlrededor(int i, int j) {
+		boolean flag = false;
+		int iaux = i-1, jaux = j-1;
+		
+		/*
+		 *  Recorremos todas las casillas alrededor de la dada y si no está abierto, lo abrimos.
+		 *  En caso de salirnos de los límites de la matriz, capturamos la excepción y no hacemos nada.
+		 */
+		while (iaux < i+1 && !flag) {
+			while (jaux < j+1 && !flag) {
+				try {
+					if (!casillaAbierta[iaux][jaux])
+						flag = true;
+				} catch(IndexOutOfBoundsException ex) {
+					// Capturamos la excepción pero no hacemos nada
+				} finally {
+					jaux++;
+				}
+			}
+			iaux++;
+		}
+		
+		return flag;
+	}
+	
 	/**
 	 * Muestra una ventana que indica el fin del juego
 	 * 

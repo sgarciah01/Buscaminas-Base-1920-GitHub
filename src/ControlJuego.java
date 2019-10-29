@@ -164,5 +164,7 @@ public class ControlJuego {
 	public int getPuntuacion() {
 		return puntuacion;
 	}
+
+	
 	
 }

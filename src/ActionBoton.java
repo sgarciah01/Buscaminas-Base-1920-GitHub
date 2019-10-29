@@ -34,47 +34,64 @@ public class ActionBoton implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("\n--> PULSADA CASILLA (" + i + ", " + j + ") <--\n");
 		ejecutarAccion(i, j);
+		System.out.println("\n--> FIN ACCIÓN (" + i + ", " + j + ") <--\n");
 	}
 
 	public void ejecutarAccion(int posI, int posJ) {
-		int numMinas = this.ventana.juego.getMinasAlrededor(posI, posJ);
+		int numMinas = ventana.juego.getMinasAlrededor(posI, posJ);
+
+		System.out.println("-> Ejecutada acción (" + posI + ", " + posJ + "). NumMinas: " + numMinas);
 
 		// Si el número indicado en la casilla es 0, abrirá los botones de alrededor.
 		if (numMinas == 0) {
 
-			this.ventana.mostrarNumMinasAlrededor(posI, posJ); // Mostramos minas alrededor
-			this.ventana.actualizarPuntuacion(); // Actualizamos la puntuación
-			
-			// Ahora expandimos hacia todos los lados (siempre que sea posible)
-			if (posI > 0)	{
-				if (!this.ventana.casillasAbiertas[posI-1][posJ])
-					ejecutarAccion(posI-1, posJ);		// Hacia la izquierda
-			}
-			if (posI < this.ventana.juego.LADO_TABLERO) {
-				if (!this.ventana.casillasAbiertas[posI+1][posJ])
-					ejecutarAccion(posI+1, posJ);		// Hacia la derecha
-			}
-			if (posJ > 0) {
-				if (!this.ventana.casillasAbiertas[posI][posJ-1])
-					ejecutarAccion(posI, posJ-1);		// Hacia arriba
-			}
-			if (posJ < this.ventana.juego.LADO_TABLERO) {	
-				if (!this.ventana.casillasAbiertas[posI][posJ+1])
-					ejecutarAccion(posI, posJ+1);		// Hacia abajo
+			// Abrimos todas las casillas alrededor, ya que no hay una mina en ninguna de
+			// ellas.
+			ventana.abrirCasillaCero(posI, posJ);
+
+			ventana.actualizarPuntuacion(); // Actualizamos la puntuación
+			ventana.refrescarPantalla(); // Refrescamos la pantalla
+
+			if (ventana.juego.esFinJuego()) // Si es el final del juego
+				ventana.mostrarFinJuego(false); // Mostramos final del juego, ¡¡ HEMOS GANADO !!
+			else {
+				// Ahora expandimos hacia todos los lados (siempre que sea posible)
+				if (posI > 0) {
+					if (ventana.juego.getMinasAlrededor(posI - 1, posJ) == 0 
+							&& !ventana.estanAbiertasTodasAlrededor(posI-1, posJ))
+						ejecutarAccion(posI - 1, posJ); // Hacia arriba
+				}
+				if (posI < ventana.juego.LADO_TABLERO - 1) {
+					if (ventana.juego.getMinasAlrededor(posI + 1, posJ) == 0 
+							&& !ventana.estanAbiertasTodasAlrededor(posI+1, posJ))
+						ejecutarAccion(posI + 1, posJ); // Hacia abajo
+				}
+				if (posJ > 0) {
+					if (ventana.juego.getMinasAlrededor(posI, posJ - 1) == 0 
+							&& !ventana.estanAbiertasTodasAlrededor(posI, posJ-1))
+						ejecutarAccion(posI, posJ - 1); // Hacia izquierda
+				}
+				if (posJ < ventana.juego.LADO_TABLERO - 1) {
+					if (ventana.juego.getMinasAlrededor(posI, posJ + 1) == 0 
+							&& !ventana.estanAbiertasTodasAlrededor(posI, posJ+1))
+						ejecutarAccion(posI, posJ + 1); // Hacia derecha
+				}
 			}
 
 		} else if (numMinas == -1) { // Hemos pisado una mina
 
-			this.ventana.mostrarFinJuego(true); // Termina el juego
+			ventana.mostrarFinJuego(true); // Termina el juego
 
 		} else { // Hemos pulsado una casilla sin mina, pero no hay que expandir
-			this.ventana.mostrarNumMinasAlrededor(posI, posJ); // Mostramos minas alrededor
-			this.ventana.actualizarPuntuacion(); // Actualizamos la puntuación
-			this.ventana.refrescarPantalla(); // Refrescamos la pantalla
 
-			if (this.ventana.juego.esFinJuego()) // Si es el final del juego
-				this.ventana.mostrarFinJuego(false); // Mostramos final del juego, ¡¡ HEMOS GANADO !!
+			ventana.mostrarNumMinasAlrededor(posI, posJ); // Mostramos minas alrededor
+			ventana.actualizarPuntuacion(); // Actualizamos la puntuación
+			ventana.refrescarPantalla(); // Refrescamos la pantalla
+
+			if (ventana.juego.esFinJuego()) // Si es el final del juego
+				ventana.mostrarFinJuego(false); // Mostramos final del juego, ¡¡ HEMOS GANADO !!
 		}
 	}
 
