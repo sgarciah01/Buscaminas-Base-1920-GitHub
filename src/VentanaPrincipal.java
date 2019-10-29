@@ -136,6 +136,9 @@ public class VentanaPrincipal {
 		// BotónEmpezar:
 		panelEmpezar.add(botonEmpezar);
 		panelPuntuacion.add(pantallaPuntuacion);
+		
+		// Añadimos la imagen al panelImagen
+		
 	}
 
 	/**
