@@ -2,14 +2,16 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 /**
- * Clase que implementa el listener de los botones del Buscaminas.La clase solamente 
- * controlará qué hacen los botones cuando se pulsa el botón derecho. Añadirá la 
- * funcionalidad para advertir al jugador que en un botón hay una mina, inhabilitando
- * el botón pulsado y marcándolo. 
+ * Clase que implementa el listener de los botones del Buscaminas. La clase solamente 
+ * <b>controlará qué hacen los botones cuando se pulsa el botón derecho</b>. Añadirá la 
+ * funcionalidad para <b>advertir al jugador que en un botón hay una mina</b>, <b>inhabilitando
+ * el botón pulsado y marcándolo</b>. 
  * @author Sergio García Hernández
+ * @see MouseListener
  */
 public class MouseListenerBoton implements MouseListener{
 
@@ -44,11 +46,13 @@ public class MouseListenerBoton implements MouseListener{
 			JButton boton = ((JButton)e.getSource());	// Obtenemos el botón.
 			
 			if (boton.getText().equals("-")) {	// Si el botón NO ESTÁ EN ESTADO DE WARNING
-				boton.setText("M");
+				boton.setText("");
 				boton.setBackground(Color.RED);
+				boton.setIcon(new ImageIcon("iconos/bandera.png"));
 				boton.setEnabled(false);
 			} else {	// El botón ESTÁ EN ESTADO DE WARNING
 				boton.setText("-");
+				boton.setIcon(null);
 				boton.setBackground(new JButton().getBackground());
 				boton.setEnabled(true);
 			}

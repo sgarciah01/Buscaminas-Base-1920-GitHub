@@ -3,6 +3,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,6 +33,9 @@ public class VentanaPrincipal {
 	JButton botonEmpezar;
 	JTextField pantallaPuntuacion;
 
+	// Label para la imagen
+	JLabel labelImagen;
+	
 	// LA VENTANA GUARDA UN CONTROL DE JUEGO:
 	ControlJuego juego;
 	
@@ -138,6 +142,11 @@ public class VentanaPrincipal {
 		panelPuntuacion.add(pantallaPuntuacion);
 		
 		// Añadimos la imagen al panelImagen
+		labelImagen = new JLabel();
+		panelImagen.setLayout(new GridLayout(1, 1));
+		panelImagen.add(labelImagen);
+		labelImagen.setIcon(new ImageIcon("iconos/sonreir.png"));
+		labelImagen.setHorizontalAlignment(JLabel.CENTER);
 		
 	}
 
@@ -209,6 +218,9 @@ public class VentanaPrincipal {
 				casillaAbierta[i][j] = false;
 			}
 		}
+		
+		// Cambiamos la imagen del icono
+		labelImagen.setIcon(new ImageIcon("iconos/sonreir.png"));
 		
 		// Añadimos los listeners
 		inicializarListeners();
