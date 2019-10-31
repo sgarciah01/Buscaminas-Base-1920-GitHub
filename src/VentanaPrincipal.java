@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,6 +13,26 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+/**
+ * Es la clase que gestiona todo lo relativo a la ventana del juego, la que
+ * maneja el usuario. Esta ventana contiene un panel con los botones que
+ * permiten jugar al buscaminas. A parte, en la parte superior tenemos un panel
+ * con un icono, un botón que nos permite iniciar una nueva partida y un panel
+ * que nos muestra la puntuación conseguida.
+ * 
+ * @author jesusredondogarcia, Sergio García Hernández
+ * @version 1.0
+ * @since 30 / 10 / 2019
+ * @see {@link ControlJuego}
+ * @see {@link #inicializar()} 
+ * <pre>
+ * {@code 
+ * 	ventana.setVisible(true);
+ * 	inicializarComponentes();
+ * 	inicializarListeners();
+ * }
+ * </pre>
+ */
 public class VentanaPrincipal {
 
 	// La ventana principal, en este caso, guarda todos los componentes:
@@ -27,29 +48,34 @@ public class VentanaPrincipal {
 	JButton[][] botonesJuego;
 
 	// Correspondencia de colores para las minas:
-	Color correspondenciaColores[] = { Color.BLACK, Color.BLUE, new Color(0, 143, 57), new Color(216, 75, 32), Color.RED, 
-			Color.RED, Color.RED, Color.RED, Color.RED, Color.RED };
+	Color correspondenciaColores[] = { Color.BLACK, Color.BLUE, new Color(0, 143, 57), new Color(216, 75, 32),
+			Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED };
 
+	// Botón para empezar una nueva partida
 	JButton botonEmpezar;
+	
+	// Pantalla que almacena la puntuación de la partida
 	JTextField pantallaPuntuacion;
 
 	// Label para la imagen
 	JLabel labelImagen;
-	
+
 	// LA VENTANA GUARDA UN CONTROL DE JUEGO:
 	ControlJuego juego;
-	
+
 	// Matriz que nos indica qué casillas están abiertas
 	boolean[][] casillaAbierta;
 
-	// Constructor, marca el tamaño y el cierre del frame
+	/**
+	 * Constructor, marca el tamaño y el cierre del frame.
+	 */
 	public VentanaPrincipal() {
 		ventana = new JFrame();
 		ventana.setBounds(100, 100, 700, 500);
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		juego = new ControlJuego();
 		casillaAbierta = new boolean[10][10];
-		
+
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				casillaAbierta[i][j] = false;
@@ -57,7 +83,9 @@ public class VentanaPrincipal {
 		}
 	}
 
-	// Inicializa todos los componentes del frame
+	/**
+	 * Inicializa todos los componentes del frame.
+	 */
 	public void inicializarComponentes() {
 
 		// Definimos el layout:
@@ -140,14 +168,14 @@ public class VentanaPrincipal {
 		// BotónEmpezar:
 		panelEmpezar.add(botonEmpezar);
 		panelPuntuacion.add(pantallaPuntuacion);
-		
+
 		// Añadimos la imagen al panelImagen
 		labelImagen = new JLabel();
 		panelImagen.setLayout(new GridLayout(1, 1));
 		panelImagen.add(labelImagen);
 		labelImagen.setIcon(new ImageIcon("iconos/sonreir.png"));
 		labelImagen.setHorizontalAlignment(JLabel.CENTER);
-		
+
 	}
 
 	/**
@@ -155,7 +183,7 @@ public class VentanaPrincipal {
 	 * programa
 	 */
 	public void inicializarListeners() {
-		
+
 		// Inicializamos los listeners de los botones del panel.
 		for (int i = 0; i < juego.LADO_TABLERO; i++) {
 			for (int j = 0; j < juego.LADO_TABLERO; j++) {
@@ -164,25 +192,30 @@ public class VentanaPrincipal {
 				botonesJuego[i][j].addMouseListener(new MouseListenerBoton(this, i, j));
 			}
 		}
-		
+
 		// Le ponemos un ActionListener al botón de empezar
 		botonEmpezar.addActionListener((e) -> {
-			// Cuando pulsemos, aparece un JOption. Si decimos que sí, inicializamos el juego
-			if (JOptionPane.showConfirmDialog(null, "¿Quieres empezar un nuevo juego?", 
-					"Nuevo Juego", JOptionPane.OK_OPTION) == JOptionPane.YES_OPTION) {
-				
+			// Cuando pulsemos, aparece un JOption. Si decimos que sí, inicializamos el
+			// juego
+			if (JOptionPane.showConfirmDialog(null, "¿Quieres empezar un nuevo juego?", "Nuevo Juego",
+					JOptionPane.OK_OPTION) == JOptionPane.YES_OPTION) {
+
 				// Eliminamos las vistas que hay en los paneles
 				ponerJuegoAPunto();
-				
+
 				juego = new ControlJuego();
-				//inicializar();
+				// inicializar();
 				refrescarPantalla();
 			}
 		});
 	}
-	
+
+	/**
+	 * Pone todos los componentes necesarios al punto inicial que permite empezar
+	 * de nuevo una nueva partida.
+	 */
 	public void ponerJuegoAPunto() {
-		
+
 		// Ponemos puntuación a cero
 		pantallaPuntuacion.setText("0");
 
@@ -196,8 +229,8 @@ public class VentanaPrincipal {
 				panelJuego.add(panelesJuego[i][j]);
 			}
 		}
-		
-		panelEmpezar.removeAll();	
+
+		panelEmpezar.removeAll();
 		botonEmpezar = new JButton("Go!");
 
 		// Botones
@@ -208,20 +241,20 @@ public class VentanaPrincipal {
 				panelesJuego[i][j].add(botonesJuego[i][j]);
 			}
 		}
-		
+
 		// Añadimos botón empezar
 		panelEmpezar.add(botonEmpezar);
-		
+
 		// Ponemos todas las casillas a cerradas
 		for (int i = 0; i < juego.LADO_TABLERO; i++) {
-			for (int j = 0;  j < juego.LADO_TABLERO; j++) {
+			for (int j = 0; j < juego.LADO_TABLERO; j++) {
 				casillaAbierta[i][j] = false;
 			}
 		}
-		
+
 		// Cambiamos la imagen del icono
 		labelImagen.setIcon(new ImageIcon("iconos/sonreir.png"));
-		
+
 		// Añadimos los listeners
 		inicializarListeners();
 	}
@@ -248,126 +281,130 @@ public class VentanaPrincipal {
 		// Eliminamos el botón y añadimos el JLabel
 		panelesJuego[i][j].remove(botonesJuego[i][j]);
 		panelesJuego[i][j].add(label);
-		
+
 		// Indicamos que hemos abierto la casilla
 		casillaAbierta[i][j] = true;
 	}
-	
+
 	/**
-	 * Abre todas las casillas que están al lado de la casilla en la posición (i, j).
+	 * Abre todas las casillas que están al lado de la casilla en la posición (i,
+	 * j).
+	 * 
 	 * @param i Fila de la casilla
 	 * @param j Columna de la casilla
 	 */
 	public void abrirCasillaCero(int i, int j) {
-		mostrarNumMinasAlrededor(i, j);	// Casilla pulsada
-		
+		mostrarNumMinasAlrededor(i, j); // Casilla pulsada
+
 		if (i > 0) {
-			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j) + ")");
-			if (!casillaAbierta[i-1][j])
-				mostrarNumMinasAlrededor(i-1, j);	// Casilla superior
+			System.out.println("\tAbrirCasillaCero (" + (i - 1) + ", " + (j) + ")");
+			if (!casillaAbierta[i - 1][j])
+				mostrarNumMinasAlrededor(i - 1, j); // Casilla superior
 		}
-			
+
 		if (i > 0 && j > 0) {
-			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j) + ")");
-			if (!casillaAbierta[i-1][j-1])
-				mostrarNumMinasAlrededor(i-1, j-1);	// Casilla diagonal superior izquierda
+			System.out.println("\tAbrirCasillaCero (" + (i - 1) + ", " + (j) + ")");
+			if (!casillaAbierta[i - 1][j - 1])
+				mostrarNumMinasAlrededor(i - 1, j - 1); // Casilla diagonal superior izquierda
 		}
 		if (j > 0) {
-			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j-1) + ")");
-			if (!casillaAbierta[i][j-1])
-				mostrarNumMinasAlrededor(i, j-1);	// Casilla izquierda
+			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j - 1) + ")");
+			if (!casillaAbierta[i][j - 1])
+				mostrarNumMinasAlrededor(i, j - 1); // Casilla izquierda
 		}
-		if (i < juego.LADO_TABLERO-1 && j>0) {
-			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j-1) + ")");
-			if (!casillaAbierta[i+1][j-1])
-				mostrarNumMinasAlrededor(i+1, j-1);	// Casilla diagonal inferior izquierda
+		if (i < juego.LADO_TABLERO - 1 && j > 0) {
+			System.out.println("\tAbrirCasillaCero (" + (i + 1) + ", " + (j - 1) + ")");
+			if (!casillaAbierta[i + 1][j - 1])
+				mostrarNumMinasAlrededor(i + 1, j - 1); // Casilla diagonal inferior izquierda
 		}
-		if (i < juego.LADO_TABLERO-1) {
-			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j) + ")");
-			if (!casillaAbierta[i+1][j])
-				mostrarNumMinasAlrededor(i+1, j);	// Casilla inferior
+		if (i < juego.LADO_TABLERO - 1) {
+			System.out.println("\tAbrirCasillaCero (" + (i + 1) + ", " + (j) + ")");
+			if (!casillaAbierta[i + 1][j])
+				mostrarNumMinasAlrededor(i + 1, j); // Casilla inferior
 		}
-		if (i < juego.LADO_TABLERO-1 && j < juego.LADO_TABLERO-1) {
-			System.out.println("\tAbrirCasillaCero (" + (i+1) + ", " + (j+1) + ")");
-			if (!casillaAbierta[i+1][j+1])
-				mostrarNumMinasAlrededor(i+1, j+1);	// Casilla diagonal inferior derecha
+		if (i < juego.LADO_TABLERO - 1 && j < juego.LADO_TABLERO - 1) {
+			System.out.println("\tAbrirCasillaCero (" + (i + 1) + ", " + (j + 1) + ")");
+			if (!casillaAbierta[i + 1][j + 1])
+				mostrarNumMinasAlrededor(i + 1, j + 1); // Casilla diagonal inferior derecha
 		}
-		if (j < juego.LADO_TABLERO-1) {
-			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j+1) + ")");
-			if (!casillaAbierta[i][j+1])
-				mostrarNumMinasAlrededor(i, j+1);	// Casilla derecha
+		if (j < juego.LADO_TABLERO - 1) {
+			System.out.println("\tAbrirCasillaCero (" + (i) + ", " + (j + 1) + ")");
+			if (!casillaAbierta[i][j + 1])
+				mostrarNumMinasAlrededor(i, j + 1); // Casilla derecha
 		}
-		if (i > 0 && j < juego.LADO_TABLERO-1) {
-			System.out.println("\tAbrirCasillaCero (" + (i-1) + ", " + (j+1) + ")");
-			if (!casillaAbierta[i-1][j+1])
-				mostrarNumMinasAlrededor(i-1, j+1);	// Casilla diagonal superior derecha
+		if (i > 0 && j < juego.LADO_TABLERO - 1) {
+			System.out.println("\tAbrirCasillaCero (" + (i - 1) + ", " + (j + 1) + ")");
+			if (!casillaAbierta[i - 1][j + 1])
+				mostrarNumMinasAlrededor(i - 1, j + 1); // Casilla diagonal superior derecha
 		}
 
 	}
 
 	/**
-	 * Comprueba que todas las casillas alrededor de la posición (i, j) están abiertas.
+	 * Comprueba que todas las casillas alrededor de la posición (i, j) están
+	 * abiertas.
+	 * 
 	 * @param i Fila de la casilla
 	 * @param j Columna de la casilla
-	 * @return Verdadero en caso de que todas estén abiertas. Falso si hay alguna cerrada.
+	 * @return Verdadero en caso de que todas estén abiertas. Falso si hay alguna
+	 *         cerrada.
 	 */
 	public boolean estanAbiertasTodasAlrededor(int i, int j) {
 		boolean flag = false;
-		int iaux = i-1, jaux = j-1;
-		
+		int iaux = i - 1, jaux = j - 1;
+
 		if (i > 0) {
-			System.out.println("\tAbiertasAlrededor (" + (i-1) + ", " + (j) + ")");
-			if (!casillaAbierta[i-1][j])
-				flag = true;	// Casilla superior
+			System.out.println("\tAbiertasAlrededor (" + (i - 1) + ", " + (j) + ")");
+			if (!casillaAbierta[i - 1][j])
+				flag = true; // Casilla superior
 		}
-			
+
 		if (i > 0 && j > 0) {
-			System.out.println("\tAbiertasAlrededor (" + (i-1) + ", " + (j-1) + ")");
-			if (!casillaAbierta[i-1][j-1])
-				flag = true;	// Casilla diagonal superior izquierda
+			System.out.println("\tAbiertasAlrededor (" + (i - 1) + ", " + (j - 1) + ")");
+			if (!casillaAbierta[i - 1][j - 1])
+				flag = true; // Casilla diagonal superior izquierda
 		}
 		if (j > 0) {
-			System.out.println("\tAbiertasAlrededor (" + (i) + ", " + (j-1) + ")");
-			if (!casillaAbierta[i][j-1])
-				flag = true;	// Casilla izquierda
+			System.out.println("\tAbiertasAlrededor (" + (i) + ", " + (j - 1) + ")");
+			if (!casillaAbierta[i][j - 1])
+				flag = true; // Casilla izquierda
 		}
-		if (i < juego.LADO_TABLERO-1 && j>0) {
-			System.out.println("\tAbiertasAlrededor (" + (i+1) + ", " + (j-1) + ")");
-			if (!casillaAbierta[i+1][j-1])
-				flag = true;	// Casilla diagonal inferior izquierda
+		if (i < juego.LADO_TABLERO - 1 && j > 0) {
+			System.out.println("\tAbiertasAlrededor (" + (i + 1) + ", " + (j - 1) + ")");
+			if (!casillaAbierta[i + 1][j - 1])
+				flag = true; // Casilla diagonal inferior izquierda
 		}
-		if (i < juego.LADO_TABLERO-1) {
-			System.out.println("\tAbiertasAlrededor (" + (i+1) + ", " + (j) + ")");
-			if (!casillaAbierta[i+1][j])
-				flag = true;	// Casilla inferior
+		if (i < juego.LADO_TABLERO - 1) {
+			System.out.println("\tAbiertasAlrededor (" + (i + 1) + ", " + (j) + ")");
+			if (!casillaAbierta[i + 1][j])
+				flag = true; // Casilla inferior
 		}
-		if (i < juego.LADO_TABLERO-1 && j < juego.LADO_TABLERO-1) {
-			System.out.println("\tAbiertasAlrededor (" + (i+1) + ", " + (j+1) + ")");
-			if (!casillaAbierta[i+1][j+1])
-				flag = true;	// Casilla diagonal inferior derecha
+		if (i < juego.LADO_TABLERO - 1 && j < juego.LADO_TABLERO - 1) {
+			System.out.println("\tAbiertasAlrededor (" + (i + 1) + ", " + (j + 1) + ")");
+			if (!casillaAbierta[i + 1][j + 1])
+				flag = true; // Casilla diagonal inferior derecha
 		}
-		if (j < juego.LADO_TABLERO-1) {
-			System.out.println("\tAbiertasAlrededor (" + (i) + ", " + (j+1) + ")");
-			if (!casillaAbierta[i][j+1])
-				flag = true;	// Casilla derecha
+		if (j < juego.LADO_TABLERO - 1) {
+			System.out.println("\tAbiertasAlrededor (" + (i) + ", " + (j + 1) + ")");
+			if (!casillaAbierta[i][j + 1])
+				flag = true; // Casilla derecha
 		}
-		if (i > 0 && j < juego.LADO_TABLERO-1) {
-			System.out.println("\tAbiertasAlrededor (" + (i-1) + ", " + (j+1) + ")");
-			if (!casillaAbierta[i-1][j+1])
-				flag = true;	// Casilla diagonal superior derecha
+		if (i > 0 && j < juego.LADO_TABLERO - 1) {
+			System.out.println("\tAbiertasAlrededor (" + (i - 1) + ", " + (j + 1) + ")");
+			if (!casillaAbierta[i - 1][j + 1])
+				flag = true; // Casilla diagonal superior derecha
 		}
-		
+
 		return flag;
 	}
-	
+
 	/**
 	 * Muestra una ventana que indica el fin del juego
 	 * 
 	 * @param porExplosion : Un booleano que indica si es final del juego porque ha
 	 *                     explotado una mina (true) o bien porque hemos desactivado
 	 *                     todas (false)
-	 * @post : Todos los botones se desactivan excepto el de volver a iniciar el
-	 *       juego.
+	 * @post : Todos los botones se desactivan excepto el de volver a iniciar el juego.
 	 */
 	public void mostrarFinJuego(boolean porExplosion) {
 		// Deshabilitamos todos los botones del tablero
@@ -382,8 +419,8 @@ public class VentanaPrincipal {
 			JOptionPane.showMessageDialog(null, "¡¡ Ha explotado una mina !!\nFin del juego...", "¡¡ BOOM !!",
 					JOptionPane.ERROR_MESSAGE);
 		} else {
-			JOptionPane.showMessageDialog(null, "Has localizado todas las minas.\n"
-					+ "¡ Has ganado !", "¡¡ GANASTE !!", JOptionPane.OK_OPTION);
+			JOptionPane.showMessageDialog(null, "Has localizado todas las minas.\n" + "¡ Has ganado !", "¡¡ GANASTE !!",
+					JOptionPane.OK_OPTION);
 		}
 
 		// Deshabilitamos todos los botones del tablero
