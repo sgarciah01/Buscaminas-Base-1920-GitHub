@@ -47,9 +47,10 @@ public class ActionBoton implements ActionListener {
 		if (!ventana.juego.abrirCasilla(i, j)) {
 			// Hemos pisado una mina
 			
+			// Suena el Abuelo Simpson gritando "¡¡ AHH !! ¡¡ LA MUERTE !! "
 			Player apl;
 			try {
-				apl = new Player(new FileInputStream("sonidos/a_fregar.mp3"));
+				apl = new Player(new FileInputStream("sonidos/ah_la_muerte.mp3"));
 				apl.play();
 			} catch (FileNotFoundException | JavaLayerException e1) {
 				// TODO Auto-generated catch block
@@ -65,9 +66,20 @@ public class ActionBoton implements ActionListener {
 			ventana.actualizarPuntuacion(); // Actualizamos la puntuación
 			ventana.refrescarPantalla(); // Refrescamos la pantalla
 
-			if (ventana.juego.esFinJuego()) // Si es el final del juego
+			if (ventana.juego.esFinJuego()) { // Si es el final del juego
+				
+				// Suena el Sr. Burns diciendo "Excelente..."
+				Player apl;
+				try {
+					apl = new Player(new FileInputStream("sonidos/excelente.mp3"));
+					apl.play();
+				} catch (FileNotFoundException | JavaLayerException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 				ventana.mostrarFinJuego(false); // Mostramos final del juego, ¡¡ HEMOS GANADO !!
-			else {
+			} else {
 				// Obtenemos el número de minas
 				numMinas = ventana.juego.getMinasAlrededor(i, j);
 
