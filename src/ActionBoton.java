@@ -48,14 +48,8 @@ public class ActionBoton implements ActionListener {
 			// Hemos pisado una mina
 			
 			// Suena el Abuelo Simpson gritando "¡¡ AHH !! ¡¡ LA MUERTE !! "
-			Player apl;
-			try {
-				apl = new Player(new FileInputStream("sonidos/ah_la_muerte.mp3"));
-				apl.play();
-			} catch (FileNotFoundException | JavaLayerException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			Sonido sonidoAbuelo = new Sonido("sonidos/ah_la_muerte.mp3");
+			sonidoAbuelo.start();
 
 			ventana.labelImagen.setIcon(new ImageIcon("iconos/ataud.png"));
 			ventana.mostrarFinJuego(true); // Termina el juego
@@ -69,15 +63,9 @@ public class ActionBoton implements ActionListener {
 			if (ventana.juego.esFinJuego()) { // Si es el final del juego
 				
 				// Suena el Sr. Burns diciendo "Excelente..."
-				Player apl;
-				try {
-					apl = new Player(new FileInputStream("sonidos/excelente.mp3"));
-					apl.play();
-				} catch (FileNotFoundException | JavaLayerException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				Sonido sonidoAbuelo = new Sonido("sonidos/excelente.mp3");
+				sonidoAbuelo.start();
+				
 				ventana.mostrarFinJuego(false); // Mostramos final del juego, ¡¡ HEMOS GANADO !!
 			} else {
 				// Obtenemos el número de minas
