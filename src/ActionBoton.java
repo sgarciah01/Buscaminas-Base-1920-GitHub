@@ -47,11 +47,14 @@ public class ActionBoton implements ActionListener {
 		if (!ventana.juego.abrirCasilla(i, j)) {
 			// Hemos pisado una mina
 			
+			// Paramos el crono
+			ventana.panelCrono.parar();
+			
 			// Suena el Abuelo Simpson gritando "¡¡ AHH !! ¡¡ LA MUERTE !! "
 			Sonido sonidoAbuelo = new Sonido("sonidos/ah_la_muerte.mp3");
 			sonidoAbuelo.start();
 
-			ventana.labelImagen.setIcon(new ImageIcon("iconos/ataud.png"));
+//			ventana.labelImagen.setIcon(new ImageIcon("iconos/ataud.png"));
 			ventana.mostrarFinJuego(true); // Termina el juego
 			
 		} else {

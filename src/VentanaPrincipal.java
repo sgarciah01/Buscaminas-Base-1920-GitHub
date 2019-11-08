@@ -37,7 +37,7 @@ public class VentanaPrincipal {
 
 	// La ventana principal, en este caso, guarda todos los componentes:
 	JFrame ventana;
-	JPanel panelImagen;
+	JCronometro panelCrono;
 	JPanel panelEmpezar;
 	JPanel panelPuntuacion;
 	JPanel panelJuego;
@@ -58,7 +58,7 @@ public class VentanaPrincipal {
 	JTextField pantallaPuntuacion;
 
 	// Label para la imagen
-	JLabel labelImagen;
+	//JLabel labelImagen;
 
 	// LA VENTANA GUARDA UN CONTROL DE JUEGO:
 	ControlJuego juego;
@@ -92,7 +92,7 @@ public class VentanaPrincipal {
 		ventana.setLayout(new GridBagLayout());
 
 		// Inicializamos componentes
-		panelImagen = new JPanel();
+		panelCrono = new JCronometro();
 		panelEmpezar = new JPanel();
 		panelEmpezar.setLayout(new GridLayout(1, 1));
 		panelPuntuacion = new JPanel();
@@ -106,7 +106,7 @@ public class VentanaPrincipal {
 		pantallaPuntuacion.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// Bordes y colores:
-		panelImagen.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+		panelCrono.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 		panelEmpezar.setBorder(BorderFactory.createTitledBorder("Empezar"));
 		panelPuntuacion.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 		panelJuego.setBorder(BorderFactory.createTitledBorder("Juego"));
@@ -119,7 +119,7 @@ public class VentanaPrincipal {
 		settings.weightx = 1;
 		settings.weighty = 1;
 		settings.fill = GridBagConstraints.BOTH;
-		ventana.add(panelImagen, settings);
+		ventana.add(panelCrono, settings);
 		// VERDE
 		settings = new GridBagConstraints();
 		settings.gridx = 1;
@@ -169,12 +169,16 @@ public class VentanaPrincipal {
 		panelEmpezar.add(botonEmpezar);
 		panelPuntuacion.add(pantallaPuntuacion);
 
+		// Reseteamos el crono
+		panelCrono.resetear();
+		panelCrono.comenzar();
+		
 		// Añadimos la imagen al panelImagen
-		labelImagen = new JLabel();
-		panelImagen.setLayout(new GridLayout(1, 1));
-		panelImagen.add(labelImagen);
-		labelImagen.setIcon(new ImageIcon("iconos/sonreir.png"));
-		labelImagen.setHorizontalAlignment(JLabel.CENTER);
+//		labelImagen = new JLabel();
+//		panelImagen.setLayout(new GridLayout(1, 1));
+//		panelImagen.add(labelImagen);
+//		labelImagen.setIcon(new ImageIcon("iconos/sonreir.png"));
+//		labelImagen.setHorizontalAlignment(JLabel.CENTER);
 
 	}
 
@@ -252,8 +256,12 @@ public class VentanaPrincipal {
 			}
 		}
 
+		// Ponemos el crono a inicio
+		panelCrono.resetear();
+		panelCrono.comenzar();
+		
 		// Cambiamos la imagen del icono
-		labelImagen.setIcon(new ImageIcon("iconos/sonreir.png"));
+		//labelImagen.setIcon(new ImageIcon("iconos/sonreir.png"));
 
 		// Añadimos los listeners
 		inicializarListeners();
